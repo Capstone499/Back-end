@@ -1,10 +1,10 @@
-import javax.crypto.EncryptedPrivateKeyInfo;
 
 public class cryptography implements Runnable {
+    int encryptionType = 0;
+    String method;
+
     @Override
     public void run() {
-        int encryptionType = 0;
-        String method;
         switch (encryptionType) {
             /*
              * Notes on each method:
@@ -21,6 +21,12 @@ public class cryptography implements Runnable {
                 break;
             case 4:
                 method = "RSA"; // public key methodology.
+                RSA rsa = new RSA();
+                try {
+                    String encryptedMessage = rsa.encrypt(method);
+                    String decryptedMessage = rsa.decrypt(encryptedMessage);
+                } catch (Exception ignored) {
+                }
                 break;
             case 5:
                 method = "OpenVPN 1"; // UDP used for streaming, things that don't need to be crazy secure
