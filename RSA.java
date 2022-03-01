@@ -9,8 +9,10 @@ import javax.crypto.Cipher;
 public class RSA {
     private PrivateKey privateKey;
     private PublicKey publicKey;
+    private static final String PRIVATE_KEY_STRING = " ";
+    private static final String PUBLIC_KEY_STRING = " ";
 
-    public RSA() {
+    public void init() {
         try {
             KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
             generator.initialize(1024);
@@ -21,19 +23,18 @@ public class RSA {
         }
     }
 
-    public void initFromStrings(){
+    public void initFromStrings() {
         X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(decode(PUBLIC_KEY_STRING));
     }
 
     public void printKeys() {
-        System.err.println("public key: "+encode(publicKey.getEncoded()));
-        System.err.println("private key: "+encode(privateKey.getEncoded()));
-
+        System.err.println("public key: " + encode(publicKey.getEncoded())+"\n");
+        System.err.println("private key: " + encode(privateKey.getEncoded())+"\n");
     }
 
     public String encrypt(String message) throws Exception {
         byte[] messageToBytes = message.getBytes();
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PCKS1Padding");
+        Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.ENCRYPT_MODE, publicKey);
         byte[] encryptedBytes = cipher.doFinal(messageToBytes);
         return encode(encryptedBytes);
@@ -45,7 +46,7 @@ public class RSA {
 
     public String decrypt(String encryptedMessage) throws Exception {
         byte[] encryptedBytes = decode(encryptedMessage);
-        Cipher cipher = Cipher.getInstance("RSA/ECB/PCKS1Padding");
+        Cipher cipher = Cipher.getInstance("RSA");
         cipher.init(Cipher.DECRYPT_MODE, privateKey);
         byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
         return new String(decryptedMessage, "UTF8");
@@ -54,4 +55,20 @@ public class RSA {
     private byte[] decode(String data) {
         return Base64.getDecoder().decode(data);
     }
+
+    // Used for testing encryption and decryption. also for setting keys when
+    // needed.
+    public static void main(String[] args) {
+        RSA rsa = new RSA();
+        rsa.init();
+        try {
+            String encryptedMessage = rsa.encrypt("Checking functionality\n");
+            String dMessage = rsa.decrypt(encryptedMessage);
+
+            System.err.println("\nEncrypted: " + encryptedMessage);
+            System.err.println("\nDecrypted: " + dMessage);
+
+            rsa.printKeys();
+        } catch (Exception ignored) {
+        }    }
 }
