@@ -9,6 +9,12 @@
 from pymongo import MongoClient
 import pymongo
 
+# establish connection with port and host
+#conn = MongoClient('localhost', 27017)
+#create database
+#db = conn.database
+collection = db.test_collection
+
 cluster = "mongodb+srv://Capstone7:team7@cluster0.n2jcc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
 client = MongoClient(cluster)
 print(client.list_database_names())
