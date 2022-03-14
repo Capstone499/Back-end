@@ -21,12 +21,12 @@ public class cryptography implements Runnable {
                 break;
             case 4:
                 method = "RSA"; // public key methodology.
-                RSA rsa = new RSA();
-                try {
-                    String encryptedMessage = rsa.encrypt(method);
-                    String decryptedMessage = rsa.decrypt(encryptedMessage);
-                } catch (Exception ignored) {
-                }
+                // RSA rsa = new RSA();
+                // try {
+                //     String encryptedMessage = rsa.encrypt(method);
+                //     String decryptedMessage = rsa.decrypt(encryptedMessage);
+                // } catch (Exception ignored) {
+                // }
                 break;
             case 5:
                 method = "OpenVPN 1"; // UDP used for streaming, things that don't need to be crazy secure

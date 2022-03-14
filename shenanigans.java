@@ -12,5 +12,4 @@ AES implementation = https://www.youtube.com/watch?v=J1RmZZEkN0k
 */
 
 public class shenanigans {
-    serverFlags Creation = new serverFlags();
 }
