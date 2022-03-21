@@ -1,10 +1,13 @@
-import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 public class AES1 {
+    private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
+    private String eyeBee = "oLFQ3dPSDv02xD1S";
     private SecretKey key;
     private byte[] IV;
 
@@ -14,11 +17,16 @@ public class AES1 {
         key = generator.generateKey();
     }
 
+    public void initFromStrings() {
+        key = new SecretKeySpec(decode(yabe), "AES");
+        this.IV = decode(eyeBee);
+    }
+
     public String encrypt(String message) throws Exception {
         byte[] messageInBytes = message.getBytes();
         Cipher encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-        encryptionCipher.init(Cipher.ENCRYPT_MODE, key);
-        IV = encryptionCipher.getIV();
+        GCMParameterSpec spec = new GCMParameterSpec(128, IV);
+        encryptionCipher.init(Cipher.ENCRYPT_MODE, key, spec);
         byte[] encryptedBytes = encryptionCipher.doFinal(messageInBytes);
         return encode(encryptedBytes);
     }
@@ -41,15 +49,14 @@ public class AES1 {
     }
 
     private void exportKeys() {
-        System.err.println("Secret key: " + encode(key.getEncoded()));
-        System.err.println("IV: " + IV);
-
+        System.err.println("SecretKey : " + encode(key.getEncoded()));
+        System.err.println("IV : " + encode(IV));
     }
 
     public static void main(String[] args) {
         try {
             AES1 aes = new AES1();
-            aes.init();
+            aes.initFromStrings();
             String encryptedMessage = aes.encrypt("da baby");
             String decryptedMessage = aes.decrypt(encryptedMessage);
 
