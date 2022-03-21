@@ -78,11 +78,11 @@ public class Server {
 							aes.initFromStrings();
 							line = in.readUTF();
 							UEline = aes.decrypt(line);
-							System.out.println("encrypted message: " + line);
+							System.out.println("decrypted message: " + UEline);
 							if (UEline.equals("Over")) {
 								break;
 							}
-							System.out.println("decrypted message: " + UEline);
+							System.out.println("encrypted message: " + line);
 						} catch (Exception ignored) {
 						}
 					} else {
@@ -91,7 +91,8 @@ public class Server {
 					}
 
 				} catch (IOException i) {
-					System.out.println(i);
+					System.out.println(i); // without break runs infinitely. debugg plz
+					break;
 				}
 			}
 
