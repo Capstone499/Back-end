@@ -48,12 +48,20 @@ public class Client {
 		while (!line.equals("Over")) {
 			try {
 				if (line.equals("AES1")) {
-					current_mode++;
+					current_mode = 1;
+					// serverLines = serverinput.readUTF();
+					// System.err.println(serverLines);
+				}
+				if (line.equals("RSA")) {
+					current_mode = 2;
 					// serverLines = serverinput.readUTF();
 					// System.err.println(serverLines);
 				}
 				if (line.equals("turn off AES1")) {
-					current_mode--;
+					current_mode = 0;
+				}
+				if (line.equals("turn off RSA")) {
+					current_mode = 0;
 				}
 				if (current_mode == 1) {
 					try {
@@ -61,6 +69,15 @@ public class Client {
 						aes.initFromStrings();
 						line = input.readLine();
 						out.writeUTF(aes.encrypt(line));
+					} catch (Exception ignored) {
+					}
+				}
+				if (current_mode == 2) {
+					try {
+						RSA rsa = new RSA();
+						rsa.initFromStrings();
+						line = input.readLine();
+						out.writeUTF(rsa.encrypt(line));
 					} catch (Exception ignored) {
 					}
 				} else {

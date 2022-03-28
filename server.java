@@ -64,13 +64,24 @@ public class Server {
 					if (line.equals("AES1")) {
 						System.out.println("AES encryption on!");
 						// out.writeUTF("AES encryption on!");
-						current_mode++;
+						current_mode = 1;
+					}
+					if (line.equals("RSA")) {
+						System.out.println("RSA encryption on!");
+						// out.writeUTF("AES encryption on!");
+						current_mode = 2;
 					}
 					if (UEline.equals("turn off AES1")) {
 						System.out.println("AES encryption off!");
 						// out.writeUTF("AES encryption off!");
 						UEline = "";
-						current_mode--;
+						current_mode = 0;
+					}
+					if (UEline.equals("turn off RSA")) {
+						System.out.println("RSA encryption off!");
+						// out.writeUTF("RSA encryption off!");
+						UEline = "";
+						current_mode = 0;
 					}
 					if (current_mode == 1) {
 						try {
@@ -78,6 +89,20 @@ public class Server {
 							aes.initFromStrings();
 							line = in.readUTF();
 							UEline = aes.decrypt(line);
+							System.out.println("decrypted message: " + UEline);
+							if (UEline.equals("Over")) {
+								break;
+							}
+							System.out.println("encrypted message: " + line);
+						} catch (Exception ignored) {
+						}
+					}
+					if (current_mode == 2) {
+						try {
+							RSA rsa = new RSA();
+							rsa.initFromStrings();
+							line = in.readUTF();
+							UEline = rsa.decrypt(line);
 							System.out.println("decrypted message: " + UEline);
 							if (UEline.equals("Over")) {
 								break;
