@@ -5,6 +5,9 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.spec.X509EncodedKeySpec;
 
 // public class 
 
@@ -26,13 +29,35 @@ public class Client {
 	private DataOutputStream out = null;
 	private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
 	private String eyeBee = "oLFQ3dPSDv02xD1S";
+	private static final String PUBLIC_KEY_STRING = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI3B+PssYrepils+IU5YgKfsgrvhYr6CVSbbpxFyOrXobdusbkYI/SkQeHL8KDKwnySQXx+nX9zX5PGVbgrEymrrhSKjOhS8wm8XgH5/i2xrUnG00JcCQJCzYE6AeZsluxxE5yAGAfPM2MJjk2EwI1xY2NDxcLpXI/WnkjhFX3xwIDAQAB";
 	private SecretKey key;
+	private PublicKey publicKey;
 	private byte[] IV;
+
 	private int current_mode = 0;
 
+	public void initPublicKeyRSA() {
+		try {
+			X509EncodedKeySpec keySpecPublic = new X509EncodedKeySpec(decode(PUBLIC_KEY_STRING));
+
+			KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+			publicKey = keyFactory.generatePublic(keySpecPublic);
+		} catch (Exception ignored) {
+		}
+	}
+
 	public void initFromStringsAES() {
-		key = new SecretKeySpec(decodeAES(yabe), "AES");
-		this.IV = decodeAES(eyeBee);
+		key = new SecretKeySpec(decode(yabe), "AES");
+		this.IV = decode(eyeBee);
+	}
+
+	public String encryptRSA(String message) throws Exception {
+		byte[] messageToBytes = message.getBytes();
+		Cipher cipher = Cipher.getInstance("RSA");
+		cipher.init(Cipher.ENCRYPT_MODE, publicKey);
+		byte[] encryptedBytes = cipher.doFinal(messageToBytes);
+		return encode(encryptedBytes);
 	}
 
 	public String encryptAES(String message) throws Exception {
@@ -41,14 +66,14 @@ public class Client {
 		GCMParameterSpec spec = new GCMParameterSpec(128, IV);
 		encryptionCipher.init(Cipher.ENCRYPT_MODE, key, spec);
 		byte[] encryptedBytes = encryptionCipher.doFinal(messageInBytes);
-		return encodeAES(encryptedBytes);
+		return encode(encryptedBytes);
 	}
 
-	private String encodeAES(byte[] data) {
+	private String encode(byte[] data) {
 		return Base64.getEncoder().encodeToString(data);
 	}
 
-	private byte[] decodeAES(String data) {
+	private byte[] decode(String data) {
 		return Base64.getDecoder().decode(data);
 	}
 
@@ -78,6 +103,7 @@ public class Client {
 		// keep reading until "Over" is input
 		while (!line.equals("Over")) {
 			try {
+				System.out.println(current_mode);
 				if (line.equals("AES")) {
 					current_mode = 1;
 					// serverLines = serverinput.readUTF();
@@ -102,16 +128,14 @@ public class Client {
 					} catch (Exception ignored) {
 					}
 				}
-				// if (current_mode == 2) {
-				// try {
-				// RSA rsa = new RSA();
-				// rsa.initFromStrings();
-				// line = input.readLine();
-				// out.writeUTF(rsa.encrypt(line));
-				// } catch (Exception ignored) {
-				// }
-				// }
-				else {
+				if (current_mode == 2) {
+					try {
+						initPublicKeyRSA();
+						line = input.readLine();
+						out.writeUTF(encryptRSA(line));
+					} catch (Exception ignored) {
+					}
+				} else {
 					line = input.readLine();
 					out.writeUTF(line);
 				}
