@@ -1,5 +1,10 @@
 import java.net.*;
 import java.io.*;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 // public class 
 
@@ -19,7 +24,33 @@ public class Client {
 	private Socket socket = null;
 	private DataInputStream input = null;
 	private DataOutputStream out = null;
+	private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
+	private String eyeBee = "oLFQ3dPSDv02xD1S";
+	private SecretKey key;
+	private byte[] IV;
 	private int current_mode = 0;
+
+	public void initFromStringsAES() {
+		key = new SecretKeySpec(decodeAES(yabe), "AES");
+		this.IV = decodeAES(eyeBee);
+	}
+
+	public String encryptAES(String message) throws Exception {
+		byte[] messageInBytes = message.getBytes();
+		Cipher encryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
+		GCMParameterSpec spec = new GCMParameterSpec(128, IV);
+		encryptionCipher.init(Cipher.ENCRYPT_MODE, key, spec);
+		byte[] encryptedBytes = encryptionCipher.doFinal(messageInBytes);
+		return encodeAES(encryptedBytes);
+	}
+
+	private String encodeAES(byte[] data) {
+		return Base64.getEncoder().encodeToString(data);
+	}
+
+	private byte[] decodeAES(String data) {
+		return Base64.getDecoder().decode(data);
+	}
 
 	// constructor to put ip address and port
 	public Client(String address, int port) {
@@ -47,7 +78,7 @@ public class Client {
 		// keep reading until "Over" is input
 		while (!line.equals("Over")) {
 			try {
-				if (line.equals("AES1")) {
+				if (line.equals("AES")) {
 					current_mode = 1;
 					// serverLines = serverinput.readUTF();
 					// System.err.println(serverLines);
@@ -57,7 +88,7 @@ public class Client {
 					// serverLines = serverinput.readUTF();
 					// System.err.println(serverLines);
 				}
-				if (line.equals("turn off AES1")) {
+				if (line.equals("turn off AES")) {
 					current_mode = 0;
 				}
 				if (line.equals("turn off RSA")) {
@@ -65,22 +96,22 @@ public class Client {
 				}
 				if (current_mode == 1) {
 					try {
-						AES1 aes = new AES1();
-						aes.initFromStrings();
+						initFromStringsAES();
 						line = input.readLine();
-						out.writeUTF(aes.encrypt(line));
+						out.writeUTF(encryptAES(line));
 					} catch (Exception ignored) {
 					}
 				}
-				if (current_mode == 2) {
-					try {
-						RSA rsa = new RSA();
-						rsa.initFromStrings();
-						line = input.readLine();
-						out.writeUTF(rsa.encrypt(line));
-					} catch (Exception ignored) {
-					}
-				} else {
+				// if (current_mode == 2) {
+				// try {
+				// RSA rsa = new RSA();
+				// rsa.initFromStrings();
+				// line = input.readLine();
+				// out.writeUTF(rsa.encrypt(line));
+				// } catch (Exception ignored) {
+				// }
+				// }
+				else {
 					line = input.readLine();
 					out.writeUTF(line);
 				}

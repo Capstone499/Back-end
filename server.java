@@ -1,12 +1,39 @@
 import java.net.*;
 import java.io.*;
+import javax.crypto.Cipher;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 
 public class Server {
 	// initialize socket and input stream
 	private Socket socket = null;
 	private ServerSocket server = null;
 	private DataInputStream in = null;
+	private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
+	private String eyeBee = "oLFQ3dPSDv02xD1S";
+	private SecretKey key;
+	private byte[] IV;
 	private int current_mode = 0;
+
+	public void initFromStringsAES() {
+		key = new SecretKeySpec(decodeAES(yabe), "AES");
+		this.IV = decodeAES(eyeBee);
+	}
+
+	public String decryptAES(String encryptedMessage) throws Exception {
+		byte[] messageInBytes = decodeAES(encryptedMessage);
+		Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
+		GCMParameterSpec spec = new GCMParameterSpec(128, IV);
+		decryptionCipher.init(Cipher.DECRYPT_MODE, key, spec);
+		byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
+		return new String(decryptedBytes);
+	}
+
+	private byte[] decodeAES(String data) {
+		return Base64.getDecoder().decode(data);
+	}
 
 	// constructor with port
 	public Server(int port) {
@@ -59,9 +86,10 @@ public class Server {
 			// }
 
 			// reads message from client until "Over" is sent (testing do while)
+
 			while (!line.equals("Over") || !UEline.equals("Over")) {
 				try {
-					if (line.equals("AES1")) {
+					if (line.equals("AES")) {
 						System.out.println("AES encryption on!");
 						// out.writeUTF("AES encryption on!");
 						current_mode = 1;
@@ -71,7 +99,7 @@ public class Server {
 						// out.writeUTF("AES encryption on!");
 						current_mode = 2;
 					}
-					if (UEline.equals("turn off AES1")) {
+					if (UEline.equals("turn off AES")) {
 						System.out.println("AES encryption off!");
 						// out.writeUTF("AES encryption off!");
 						UEline = "";
@@ -85,10 +113,9 @@ public class Server {
 					}
 					if (current_mode == 1) {
 						try {
-							AES1 aes = new AES1();
-							aes.initFromStrings();
+							initFromStringsAES();
 							line = in.readUTF();
-							UEline = aes.decrypt(line);
+							UEline = decryptAES(line);
 							System.out.println("decrypted message: " + UEline);
 							if (UEline.equals("Over")) {
 								break;
@@ -97,20 +124,21 @@ public class Server {
 						} catch (Exception ignored) {
 						}
 					}
-					if (current_mode == 2) {
-						try {
-							RSA rsa = new RSA();
-							rsa.initFromStrings();
-							line = in.readUTF();
-							UEline = rsa.decrypt(line);
-							System.out.println("decrypted message: " + UEline);
-							if (UEline.equals("Over")) {
-								break;
-							}
-							System.out.println("encrypted message: " + line);
-						} catch (Exception ignored) {
-						}
-					} else {
+					// if (current_mode == 2) {
+					// 	try {
+					// 		RSA rsa = new RSA();
+					// 		rsa.initFromStrings();
+					// 		line = in.readUTF();
+					// 		UEline = rsa.decrypt(line);
+					// 		System.out.println("decrypted message: " + UEline);
+					// 		if (UEline.equals("Over")) {
+					// 			break;
+					// 		}
+					// 		System.out.println("encrypted message: " + line);
+					// 	} catch (Exception ignored) {
+					// 	}
+					// } 
+					else {
 						line = in.readUTF();
 						System.out.println(line);
 					}
