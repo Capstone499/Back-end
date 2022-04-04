@@ -1,0 +1,8 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-image: urL(background.png);
+  background-size: cover;
+  background-position: center;
+  font-family: "Times New Roman", Times, serif;
+}
