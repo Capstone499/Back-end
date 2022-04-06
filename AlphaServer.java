@@ -9,7 +9,7 @@ import java.security.PrivateKey;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
-public class Server {
+public class AlphaServer {
 	// initialize socket and input stream
 	private Socket socket = null;
 	private ServerSocket server = null;
@@ -61,7 +61,7 @@ public class Server {
 	}
 
 	// constructor with port
-	public Server(int port) {
+	public AlphaServer(int port) {
 		// starts server and waits for a connection
 		try {
 			server = new ServerSocket(port);
@@ -184,7 +184,7 @@ public class Server {
 	}
 
 	public static void main(String args[]) {
-		Server server = new Server(5000);
+		AlphaServer server = new AlphaServer(5000);
 		System.out.println(server);
 	}
 }

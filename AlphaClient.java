@@ -22,7 +22,7 @@ import java.security.spec.X509EncodedKeySpec;
 //     }
 // }
 
-public class Client {
+public class AlphaClient {
 	// initialize socket and input output streams
 	private Socket socket = null;
 	private DataInputStream input = null;
@@ -78,7 +78,7 @@ public class Client {
 	}
 
 	// constructor to put ip address and port
-	public Client(String address, int port) {
+	public AlphaClient(String address, int port) {
 		// establish a connection
 		try {
 			socket = new Socket(address, port);
@@ -157,6 +157,6 @@ public class Client {
 
 	public static void main(String args[]) // main function
 	{
-		Client client = new Client("127.0.0.1", 5000); // define ip address and port number
+		AlphaClient client = new AlphaClient("127.0.0.1", 5000); // define ip address and port number
 	}
 }

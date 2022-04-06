@@ -1,7 +1,7 @@
 import java.io.*;
 import java.net.*;
 
-class Myserver {
+class BetaServer {
     public static void main(String[] args)
 	{
 		ServerSocket server = null;
