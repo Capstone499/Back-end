@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html>
-   <head>
-      <title>Login Form</title>
-      <link rel="stylesheet" type="text/css" href="style.css">
-   </head>
-   <body>
-      <div class="loginbox">
-         <h1>Sign Up</h1>
-         <form>
-            Username:<br> <input type="text" name="username" placeholder="Insert username/email here">
-            <br>
-            Password:<br> <input type="password" name="pw" placeholder="Insert password here">
-            <br>
-            <input type="submit" id="submitDetails" name="submitDetails" class="registerbtn" value="Submit" /> 
-            <br>
-         </form>
-      </div>
-   </body>
-</html>
+{% block body %}
+      <p>Sign Up</p>
+      <form method="post" action="{{ url_for('signup') }}">
+         <div class="form-group">
+             <label for="username">Username</label>
+             <input type="text" class="form-control"  name="username" placeholder="Username">
+         </div>
+         <div class="form-group">
+             <label for="password">Password</label>
+             <input type="password" class="form-control"  name="password" placeholder="Password">
+         </div>
+         <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
+     </form>
+{% endblock %}
