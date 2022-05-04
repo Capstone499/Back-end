@@ -83,40 +83,56 @@ public class BetaClient {
 			// object of scanner class
 			Scanner sc = new Scanner(System.in); // converts bytes into characters
 			String line = null;
+			int faze = 0;
 
 			while (!"exit".equalsIgnoreCase(line)) {
 
 				// reading from user
 				line = sc.nextLine();
 
-				// sending the user input to server
-				out.println(line);
-				out.flush(); // clear the stream of any element
-
-				// displaying server reply
-				System.out.println("Server replied "
-						+ in.readLine());
-
 				// AES Mode
-				try {
-					out.println(aes.encrypt(line));
+				if (faze == 1) {
+					try {
+						out.println(aes.encrypt(line));
+						out.flush(); // clear the stream of any element
+
+						// displaying server reply
+						System.out.println("Server replied (AES): "
+								+ in.readLine());
+					} catch (Exception ignored) {
+					}
+				}
+				// RSA Mode
+				if (faze == 2) {
+					try {
+						out.println(rsa.encrypt(line));
+						out.flush(); // clear the stream of any element
+
+						// displaying server reply
+						System.out.println("Server replied (RSA): "
+								+ in.readLine());
+					} catch (Exception ignored) {
+					}
+
+				}
+				if (faze == 0) {
+					// sending the user input to server
+					// displaying server reply
+					out.println(line);
 					out.flush(); // clear the stream of any element
 
-					// displaying server reply
-					System.out.println("Server replied (AES): "
+					System.out.println("Server replied "
 							+ in.readLine());
-				} catch (Exception ignored) {
 				}
 
-				// RSA Mode
-				try {
-					out.println(rsa.encrypt(line));
-					out.flush(); // clear the stream of any element
-
-					// displaying server reply
-					System.out.println("Server replied (RSA): "
-							+ in.readLine());
-				} catch (Exception ignored) {
+				if ("aes on".equalsIgnoreCase(line)) {
+					faze++;
+				}
+				if ("rsa on".equalsIgnoreCase(line)) {
+					faze = 2;
+				}
+				if ("ec off".equalsIgnoreCase(line)) {
+					faze = 0;
 				}
 			}
 
