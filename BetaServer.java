@@ -12,54 +12,52 @@ import java.net.*;
 class BetaServer {
 	// private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
 	// private String eyeBee = "oLFQ3dPSDv02xD1S";
-	// private static final String PRIVATE_KEY_STRING = "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIjcH4+yxit6mKWz4hTliAp+yCu+FivoJVJtunEXI6teht26xuRgj9KRB4cvwoMrCfJJBfH6df3Nfk8ZVuCsTKauuFIqM6FLzCbxeAfn+LbGtScbTQlwJAkLNgToB5myW7HETnIAYB88zYwmOTYTAjXFjY0PFwulcj9aeSOEVffHAgMBAAECgYAf2kOKOUyAEA94+W3T+Tv5XVqPO7WDUItnLNyot374wo5XCsKBoqu2kUSURRxbVOgCuNYmZGmTwYD1PeuHbPKFvYr+MmJEImezEMXmKqUdwGVemlvqBgN9L17HZeSICPp06sip4F2zPqs7DHB2zMDSK1EQJFS0bpin6kLsQlfzeQJBAMPBPyDlXNwsX/c6xLRGj8VPtjVe41JsNq+2uqwjn7Ha8XU6B5oqeKnBTuFAt0JIGwdJeHaPXMD6WQtl9kLpJyMCQQCy+sVn7H6Hj3BdxDyykzasN7Bg0+jkCoLW0texBjuq5f3VX0r62iLmp9g831UwO194Pa2fNmMxhTNQOAqkskkNAkAAsiowSsB2w+2famUSowGV2P+z1t+GBn53R3YIcKP7tOSQ3yDxyl7dc6N9J4a/RJRcBUXZXg8dXIZ+hOFIQZ3zAkEAkonTesUcy6zbWUpEUAlMKDDoTj7yXVNl0LGMO7pYvBHWhA6je0OCc8tUtnI8c2MJRY9qSgLjsDXYz4My46m9OQJAOI+Bp8J2FvOrd+tXqZlIJuDrO+P2I3wKQCzAyZk7GcgKOsKTVS39p00w9t1PmKlsEb7fu0PSU/g+AUVKPIeVgQ==";
+	// private static final String PRIVATE_KEY_STRING =
+	// "MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIjcH4+yxit6mKWz4hTliAp+yCu+FivoJVJtunEXI6teht26xuRgj9KRB4cvwoMrCfJJBfH6df3Nfk8ZVuCsTKauuFIqM6FLzCbxeAfn+LbGtScbTQlwJAkLNgToB5myW7HETnIAYB88zYwmOTYTAjXFjY0PFwulcj9aeSOEVffHAgMBAAECgYAf2kOKOUyAEA94+W3T+Tv5XVqPO7WDUItnLNyot374wo5XCsKBoqu2kUSURRxbVOgCuNYmZGmTwYD1PeuHbPKFvYr+MmJEImezEMXmKqUdwGVemlvqBgN9L17HZeSICPp06sip4F2zPqs7DHB2zMDSK1EQJFS0bpin6kLsQlfzeQJBAMPBPyDlXNwsX/c6xLRGj8VPtjVe41JsNq+2uqwjn7Ha8XU6B5oqeKnBTuFAt0JIGwdJeHaPXMD6WQtl9kLpJyMCQQCy+sVn7H6Hj3BdxDyykzasN7Bg0+jkCoLW0texBjuq5f3VX0r62iLmp9g831UwO194Pa2fNmMxhTNQOAqkskkNAkAAsiowSsB2w+2famUSowGV2P+z1t+GBn53R3YIcKP7tOSQ3yDxyl7dc6N9J4a/RJRcBUXZXg8dXIZ+hOFIQZ3zAkEAkonTesUcy6zbWUpEUAlMKDDoTj7yXVNl0LGMO7pYvBHWhA6je0OCc8tUtnI8c2MJRY9qSgLjsDXYz4My46m9OQJAOI+Bp8J2FvOrd+tXqZlIJuDrO+P2I3wKQCzAyZk7GcgKOsKTVS39p00w9t1PmKlsEb7fu0PSU/g+AUVKPIeVgQ==";
 	// private SecretKey key;
 	// private PrivateKey privateKey;
 	// private byte[] IV;
 
 	// public void initFromStringsAES() {
-	// 	key = new SecretKeySpec(decode(yabe), "AES");
-	// 	this.IV = decode(eyeBee);
+	// key = new SecretKeySpec(decode(yabe), "AES");
+	// this.IV = decode(eyeBee);
 	// }
 
 	// public void initPrivateKeyRSA() {
-	// 	try {
-	// 		PKCS8EncodedKeySpec keySpecPrivate = new PKCS8EncodedKeySpec(decode(PRIVATE_KEY_STRING));
+	// try {
+	// PKCS8EncodedKeySpec keySpecPrivate = new
+	// PKCS8EncodedKeySpec(decode(PRIVATE_KEY_STRING));
 
-	// 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+	// KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-	// 		privateKey = keyFactory.generatePrivate(keySpecPrivate);
-	// 	} catch (Exception ignored) {
-	// 	}
+	// privateKey = keyFactory.generatePrivate(keySpecPrivate);
+	// } catch (Exception ignored) {
+	// }
 
 	// }
 
 	// public String decryptAES(String encryptedMessage) throws Exception {
-	// 	byte[] messageInBytes = decode(encryptedMessage);
-	// 	Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-	// 	GCMParameterSpec spec = new GCMParameterSpec(128, IV);
-	// 	decryptionCipher.init(Cipher.DECRYPT_MODE, key, spec);
-	// 	byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
-	// 	return new String(decryptedBytes);
+	// byte[] messageInBytes = decode(encryptedMessage);
+	// Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
+	// GCMParameterSpec spec = new GCMParameterSpec(128, IV);
+	// decryptionCipher.init(Cipher.DECRYPT_MODE, key, spec);
+	// byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
+	// return new String(decryptedBytes);
 	// }
 
 	// public String decryptRSA(String encryptedMessage) throws Exception {
-	// 	byte[] encryptedBytes = decode(encryptedMessage);
-	// 	Cipher cipher = Cipher.getInstance("RSA");
-	// 	cipher.init(Cipher.DECRYPT_MODE, privateKey);
-	// 	byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
-	// 	return new String(decryptedMessage, "UTF8");
+	// byte[] encryptedBytes = decode(encryptedMessage);
+	// Cipher cipher = Cipher.getInstance("RSA");
+	// cipher.init(Cipher.DECRYPT_MODE, privateKey);
+	// byte[] decryptedMessage = cipher.doFinal(encryptedBytes);
+	// return new String(decryptedMessage, "UTF8");
 	// }
 
 	// private byte[] decode(String data) {
-	// 	return Base64.getDecoder().decode(data);
+	// return Base64.getDecoder().decode(data);
 	// }
 
 	public static void main(String[] args) {
-		RSA rsa = new RSA();
-		AES aes = new AES();
-		aes.initFromStrings();
-		rsa.initFromStrings();
 		ServerSocket server = null;
 		// starting up encryption things for later
 
@@ -79,7 +77,7 @@ class BetaServer {
 
 				// Displaying that new client is connected
 				// to server
-				System.out.println("New client connected"
+				System.out.println("New client connected "
 						+ client.getInetAddress()
 								.getHostAddress());
 
@@ -115,6 +113,10 @@ class BetaServer {
 		public void run() {
 			PrintWriter out = null;
 			BufferedReader in = null;
+			RSA rsa = new RSA();
+			AES aes = new AES();
+			aes.initFromStrings();
+			rsa.initFromStrings();
 			try {
 
 				// get the outputstream of client
