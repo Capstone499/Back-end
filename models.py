@@ -14,6 +14,12 @@ class User:
             "username": request.form.get('username'),
             "password": request.form.get('password')  
         }
+        # hash password before input to database
+        """conn = self.server.conn    
+        try:
+            hashed_password = self.hash_password(password)
+            self.data_entryUsers(username, hashed_password, conn)
+            print(hashed_password) """
 
         #if db.user_info.find_one({"username": user["username"]}):
         #    return jsonify({"error": "Sorry, this username is already in use"}), 400
@@ -27,6 +33,12 @@ class User:
         )
         
         return jsonify({"Success": "You have been added into our system"}), 200
+    
+    # function to hash password 
+    """def hash_password(self, password):
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode(), salt)
+        return hashed """
 
     def LogIn(self):
         print("Information sent to login:\t",request.form)
