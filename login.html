@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html>
-   <body>
-      <head>
-         <title>HTML Forms</title>
-      </head>
+{% block body %}
       <p>Log In</p>
-      <form>
-         Username:<br> <input type="text" name="username">
-         <br>
-         Password:<br> <input type="password" name="pw">
-         <br>
-         <input type="submit" id="submitDetails" name="submitDetails" class="registerbtn" value="Submit" /> 
-         <br>
-      </form>
-   </body>
-</html>
+      <form method="post" action="{{ url_for('login') }}">
+         <div class="form-group">
+             <label for="username_in">Username</label>
+             <input type="text" class="form-control" name="user" placeholder="Username">
+         </div>
+         <div class="form-group">
+             <label for="password_in">Password</label>
+             <input type="password" class="form-control" name="pass" placeholder="Password">
+         </div>
+         <button type="submit" class="btn btn-primary btn-block">Log In</button>
+     </form>
+{% endblock  %}

@@ -3,7 +3,7 @@ from flask_pymongo import PyMongo
 from flask_cors import CORS
 from acc import Mongo_URI
 from models import User
-import bcrypt
+#import bcrypt
 
 
 app=Flask(__name__,template_folder='templates')
@@ -16,7 +16,7 @@ mongo = PyMongo(app)
 def index():
     return render_template("index.html")
 
-@app.route("/success", methods = ["POST"])
+@app.route("/success", methods = ["GET","POST"])
 def success():
     return redirect(url_for("index"))
 
