@@ -94,7 +94,7 @@ class BetaServer {
 					attempt++;
 					if (Authorization(user, pass) != false) {
 						out.println("authorized");
-						System.out.println("User Successfully Logged In");
+						System.out.println(user + " Successfully Logged In");
 					} else {
 						System.out.println("Login Attempt # " + attempt);
 						out.println("fail");
