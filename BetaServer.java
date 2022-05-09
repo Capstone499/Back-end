@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.*;
 
-
 class BetaServer {
 
 	public static void main(String[] args) {
@@ -57,8 +56,8 @@ class BetaServer {
 			this.clientSocket = socket;
 		}
 
-		public Boolean Authorization(String come, String sock) {
-			if ("user".equalsIgnoreCase(come) && "pass".equalsIgnoreCase(sock)) {
+		public Boolean Authorization(String username, String password) {
+			if ("user".equalsIgnoreCase(username) && "pass".equalsIgnoreCase(password)) {
 				return true;
 			}
 			return false;
@@ -93,10 +92,16 @@ class BetaServer {
 					user = in.readLine();
 					pass = in.readLine();
 					attempt++;
-					System.out.println("Attempt # " + attempt);
-					out.println("fail");
+					if (Authorization(user, pass) != false) {
+						out.println("authorized");
+						System.out.println("User Successfully Logged In");
+					} else {
+						System.out.println("Login Attempt # " + attempt);
+						out.println("fail");
+					}
 				}
-				out.println("authorized");
+
+				out.println(user);
 
 				while ((line = in.readLine()) != null) {
 

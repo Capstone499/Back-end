@@ -39,6 +39,9 @@ public class BetaClient {
 				line = in.readLine();
 			}
 
+			System.out.println("Welcome Back! "
+								+ in.readLine());
+
 			while (!"exit".equalsIgnoreCase(line)) {
 
 				// reading from user
