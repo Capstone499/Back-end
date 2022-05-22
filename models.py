@@ -51,11 +51,11 @@ class User:
             return jsonify({"error": "Wrong Username"}), 400 
         else:
             IsLoggedIn = True  
-        if(validate["password"] == user["password"] and validate["username"] == user["username"]): 
+        '''if(validate["password"] == user["password"] and validate["username"] == user["username"]): 
                 self.IsLoggedIn = True
                 return jsonify({"Success": "You have logged into our system"}), 200
         else:
-                return jsonify({"error": "Wrong User or Password"}), 400
+                return jsonify({"error": "Wrong User or Password"}), 400'''
 
 
         password = user["password"]                               # set password variable to the input pw on login 
