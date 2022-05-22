@@ -15,11 +15,9 @@ class User:
             "username": request.form.get('username', type=str),
             "password": request.form.get('password',  type=str)  
         }
-        password = user["password"]                    # set password to the input password
-        # hash password before input to database   
-        try:
-            hashed_password = self.hash_password(password)
-            print(hashed_password) 
+        password = user["password"]                     # set password to the input password
+        hashed_password = self.hash_password(password)  # hash password before input to database 
+        print(hashed_password) 
 
         if db.user_info.find_one({"username": user["username"]}):
             return jsonify({"error": "Sorry, this username is already in use"}), 400
