@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 
-public class BetaClient {
+public class Client {
 
 	// driver code
 	public static void main(String[] args) {
