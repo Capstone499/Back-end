@@ -101,20 +101,17 @@ class Server {
 						System.out.println(user + " Successfully Logged In");
 					} else {
 						System.out.println("Login Attempt # " + attempt);
-						if(attempt == 5)
-						{
+						if (attempt == 5) {
 							out.println("Last Attempt!");
 							attempt++;
-						}
-						else
-						{
+						} else {
 							out.println("failed. try again!");
 							attempt++;
 						}
 					}
 				}
 				pass = null;
-				System.out.print(user+" logged in.\n");
+				System.out.print(user + " logged in.\n");
 				out.println(user);
 
 				while ((line = in.readLine()) != null) {
@@ -122,22 +119,22 @@ class Server {
 					// writing the received message from
 					// client
 					if (encryption_level == 0) {
-						System.out.printf(" Sent from "+user+": %s\n", line);
+						System.out.printf(" Sent from " + user + ": %s\n", line);
 						out.println(line);
 					}
 					if (encryption_level == 1) {
-						System.out.printf(" Sent from "+user+" (AES): %s\n", line);
+						System.out.printf(" Sent from " + user + " (AES): %s\n", line);
 						try {
-							System.out.printf(" Sent from "+user+" (decrypted): %s\n", aes.decrypt(line));
+							System.out.printf(" Sent from " + user + " (decrypted): %s\n", aes.decrypt(line));
 							dc_line = aes.decrypt(line);
 						} catch (Exception ignored) {
 						}
 						out.println(line);
 					}
 					if (encryption_level == 2) {
-						System.out.printf(" Sent from "+user+" (RSA): %s\n", line);
+						System.out.printf(" Sent from " + user + " (RSA): %s\n", line);
 						try {
-							System.out.printf(" Sent from "+user+" (decrypted): %s\n", rsa.decrypt(line));
+							System.out.printf(" Sent from " + user + " (decrypted): %s\n", rsa.decrypt(line));
 							dc_line = rsa.decrypt(line);
 						} catch (Exception ignored) {
 						}
