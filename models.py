@@ -15,7 +15,7 @@ class User:
             "username": request.form.get('username', type=str),
             "password": request.form.get('password',  type=str)  
         }
-        password = user["password"]
+        password = user["password"]                    # set password to the input password
         # hash password before input to database   
         try:
             hashed_password = self.hash_password(password)
@@ -48,9 +48,9 @@ class User:
         }
         validate = db.user_info.find_one({"username": user["username"]})
         if(validate == None):
-            return jsonify({"error": "Wrong Username or Password"}), 400 # is not just wrong username??
+            return jsonify({"error": "Wrong Username"}), 400 
         else:
-            IsLoggedIn = True  # how come validated just by username?
+            IsLoggedIn = True  
         if(validate["password"] == user["password"] and validate["username"] == user["username"]): 
                 self.IsLoggedIn = True
                 return jsonify({"Success": "You have logged into our system"}), 200
@@ -58,8 +58,9 @@ class User:
                 return jsonify({"error": "Wrong User or Password"}), 400
 
 
-        password = user["password"]                  # set password variable to the input pw on login 
-        if bcrypt.checkpw(password.encode(), ):     # check hashed input pw with pw stored in database
+        password = user["password"]                               # set password variable to the input pw on login 
+        found_password = db.user_info["password"]                 # set variable to hashed pw stored in database
+        if bcrypt.checkpw(password.encode(), found_password):     # check hashed input pw with hashed pw stored in database
             self.IsLoggedIn = True
             return jsonify({"Success": "You have logged into our system"}), 200
         else:
