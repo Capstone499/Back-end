@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect, url_for
 import uuid
 from acc import db
+import bcrypt
 
 
 
@@ -14,12 +15,11 @@ class User:
             "username": request.form.get('username', type=str),
             "password": request.form.get('password',  type=str)  
         }
-        # hash password before input to database
-        """conn = self.server.conn    
+        password = user["password"]
+        # hash password before input to database   
         try:
             hashed_password = self.hash_password(password)
-            self.data_entryUsers(username, hashed_password, conn)
-            print(hashed_password) """
+            print(hashed_password) 
 
         if db.user_info.find_one({"username": user["username"]}):
             return jsonify({"error": "Sorry, this username is already in use"}), 400
@@ -27,7 +27,7 @@ class User:
             db.user_info.insert_one(
                 {"_id": user["_id"],
                  "username": user["username"],
-                 "password": user["password"]
+                 "password": hashed_password
                 }
             #user    
         )
@@ -35,10 +35,10 @@ class User:
         return jsonify({"Success": "You have been added into our system"}), 200
     
     # function to hash password 
-    """def hash_password(self, password):
+    def hash_password(self, password):
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode(), salt)
-        return hashed """
+        return hashed 
 
     def LogIn(self):
         print("Information sent to login:\t",request.form)
@@ -48,11 +48,19 @@ class User:
         }
         validate = db.user_info.find_one({"username": user["username"]})
         if(validate == None):
-            return jsonify({"error": "Wrong Username or Password"}), 400 
+            return jsonify({"error": "Wrong Username or Password"}), 400 # is not just wrong username??
         else:
-            IsLoggedIn = True
-        if(validate["password"] == user["password"] and validate["username"] == user["username"]):
+            IsLoggedIn = True  # how come validated just by username?
+        if(validate["password"] == user["password"] and validate["username"] == user["username"]): 
                 self.IsLoggedIn = True
                 return jsonify({"Success": "You have logged into our system"}), 200
         else:
                 return jsonify({"error": "Wrong User or Password"}), 400
+
+
+        password = user["password"]                  # set password variable to the input pw on login 
+        if bcrypt.checkpw(password.encode(), ):     # check hashed input pw with pw stored in database
+            self.IsLoggedIn = True
+            return jsonify({"Success": "You have logged into our system"}), 200
+        else:
+            return jsonify({"error": "Wrong User or Password"}), 400
