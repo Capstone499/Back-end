@@ -10,6 +10,8 @@ public class Client {
 		AES aes = new AES();
 		aes.initFromStrings();
 		rsa.initFromStrings();
+		int current_mode = 0;
+		int attempt_counter = 0;
 		// establish a connection by providing host and port
 		// number
 		try (Socket socket = new Socket("localhost", 1234)) {
@@ -27,8 +29,6 @@ public class Client {
 
 			// recs for encryption/message sending
 			String line = null;
-			int current_mode = 0;
-			int attempt_counter = 0;
 
 			while (!"authorized".equalsIgnoreCase(line)) {
 				System.out.println("Enter username: ");
@@ -45,17 +45,26 @@ public class Client {
 				}
 				line = in.readLine();
 				attempt_counter++;
-				System.out.print("Login attempt #"+attempt_counter+" "+line+"\n");
+				if (attempt_counter > 4) {
+					break;
+				}
+				System.out.print("Login attempt #" + attempt_counter + " " + line + "\n");
 			}
+			if (attempt_counter > 4) {
+				line = "exit";
+				System.out.print("Login failed. Closing program");
 
-			System.out.println("Welcome Back! "
-					+ in.readLine());
-			System.out.println("Remember by default encryption is off!");
-			System.out.println("To turn on AES encryption simply type: aes on");
-			System.out.println("To turn on RSA encryption simply type: rsa on");
-			System.out.println("To turn off encryption simply type: ec off");
-			System.out.println("Exiting is as simple as typing: exit (while encryption is off)");
-			System.out.println("Note: to swap encryptions you must first turn off encryption and then type in the encryption level you want!");
+			} else {
+				System.out.println("Welcome Back! "
+						+ in.readLine());
+				System.out.println("Remember by default encryption is off!");
+				System.out.println("To turn on AES encryption simply type: aes on");
+				System.out.println("To turn on RSA encryption simply type: rsa on");
+				System.out.println("To turn off encryption simply type: ec off");
+				System.out.println("Exiting is as simple as typing: exit (while encryption is off)");
+				System.out.println(
+						"Note: to swap encryptions you must first turn off encryption and then type in the encryption level you want!");
+			}
 			while (!"exit".equalsIgnoreCase(line)) {
 
 				// reading from user
@@ -114,6 +123,9 @@ public class Client {
 			sc.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		if (attempt_counter < 5) {
+			System.out.print("exited successfuly");
 		}
 	}
 }

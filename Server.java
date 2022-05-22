@@ -13,6 +13,7 @@ class Server {
 			server = new ServerSocket(1234);
 			server.setReuseAddress(true);
 
+			System.out.println("Server is now online");
 			// running infinite loop for getting
 			// client request
 			while (true) {
@@ -68,7 +69,7 @@ class Server {
 			BufferedReader in = null;
 			String user = null;
 			String pass = null;
-			int attempt = 1;
+			int attempt = 0;
 			int encryption_level = 0;
 			RSA rsa = new RSA();
 			AES aes = new AES();
@@ -85,7 +86,7 @@ class Server {
 						new InputStreamReader(
 								clientSocket.getInputStream()));
 
-				String line;
+				String line = null;
 				String dc_line = null;
 
 				while (Authorization(user, pass) != true) {
@@ -100,22 +101,30 @@ class Server {
 						out.println("authorized");
 						System.out.println(user + " Successfully Logged In");
 					} else {
-						System.out.println("Login Attempt # " + attempt);
-						if (attempt == 5) {
+						if (attempt == 3) {
 							out.println("Last Attempt!");
-							attempt++;
+						}
+						if (attempt > 4) {
+							break;
 						} else {
 							out.println("failed. try again!");
 							attempt++;
 						}
+						System.out.println("Login Attempt # " + attempt);
 					}
 				}
-				pass = null;
-				System.out.print(user + " logged in.\n");
-				out.println(user);
 
-				while ((line = in.readLine()) != null) {
+				if (attempt > 4) {
+					line = null;
+					System.out.print(user + " failed to login. closing thread\n");
+				} else {
+					pass = null;
+					System.out.print(user + " logged in.\n");
+					out.println(user);
+				}
 
+				while (line != null) {
+					line = in.readLine();
 					// writing the received message from
 					// client
 					if (encryption_level == 0) {
@@ -166,8 +175,10 @@ class Server {
 					e.printStackTrace();
 				}
 			}
-			System.out.print(user + " has ended their session.\n");
-			user = null;
+			if (attempt < 5) {
+				System.out.print(user + " has ended their session.\n");
+				user = null;
+			}
 		}
 	}
 }
