@@ -57,7 +57,7 @@ public class AES {
         try {
             AES aes = new AES();
             aes.initFromStrings();
-            String encryptedMessage = aes.encrypt("da baby");
+            String encryptedMessage = aes.encrypt("checking functionality");
             String decryptedMessage = aes.decrypt(encryptedMessage);
 
             System.err.println("\nEncrypted message: " + encryptedMessage);
