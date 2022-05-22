@@ -114,6 +114,7 @@ class Server {
 					}
 				}
 				pass = null;
+				System.out.print(user+" logged in.");
 				out.println(user);
 
 				while ((line = in.readLine()) != null) {
