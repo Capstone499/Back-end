@@ -66,6 +66,10 @@ class BetaServer {
 		public void run() {
 			PrintWriter out = null;
 			BufferedReader in = null;
+			String user = null;
+			String pass = null;
+			int attempt = 1;
+			int encryption_level = 0;
 			RSA rsa = new RSA();
 			AES aes = new AES();
 			aes.initFromStrings();
@@ -83,10 +87,6 @@ class BetaServer {
 
 				String line;
 				String dc_line = null;
-				String user = null;
-				String pass = null;
-				int attempt = 0;
-				int phase = 0;
 
 				while (Authorization(user, pass) != true) {
 					try {
@@ -96,52 +96,60 @@ class BetaServer {
 					}
 					System.out.println("attempted username: " + user);
 					System.out.println("attempted password: " + pass);
-					attempt++;
 					if (Authorization(user, pass) != false) {
 						out.println("authorized");
 						System.out.println(user + " Successfully Logged In");
 					} else {
 						System.out.println("Login Attempt # " + attempt);
-						out.println("fail");
+						if(attempt == 5)
+						{
+							out.println("Last Attempt!");
+							attempt++;
+						}
+						else
+						{
+							out.println("failed. try again!");
+							attempt++;
+						}
 					}
 				}
-
+				pass = null;
 				out.println(user);
 
 				while ((line = in.readLine()) != null) {
 
 					// writing the received message from
 					// client
-					if (phase == 0) {
-						System.out.printf(" Sent from the client: %s\n", line);
+					if (encryption_level == 0) {
+						System.out.printf(" Sent from "+user+": %s\n", line);
 						out.println(line);
 					}
-					if (phase == 1) {
-						System.out.printf(" Sent from the client (AES): %s\n", line);
+					if (encryption_level == 1) {
+						System.out.printf(" Sent from "+user+" (AES): %s\n", line);
 						try {
-							System.out.printf(" Sent from the client (decrypted): %s\n", aes.decrypt(line));
+							System.out.printf(" Sent from "+user+" (decrypted): %s\n", aes.decrypt(line));
 							dc_line = aes.decrypt(line);
 						} catch (Exception ignored) {
 						}
 						out.println(line);
 					}
-					if (phase == 2) {
-						System.out.printf(" Sent from the client (RSA): %s\n", line);
+					if (encryption_level == 2) {
+						System.out.printf(" Sent from "+user+" (RSA): %s\n", line);
 						try {
-							System.out.printf(" Sent from the client (decrypted): %s\n", rsa.decrypt(line));
+							System.out.printf(" Sent from "+user+" (decrypted): %s\n", rsa.decrypt(line));
 							dc_line = rsa.decrypt(line);
 						} catch (Exception ignored) {
 						}
 						out.println(line);
 					}
 					if ("aes on".equalsIgnoreCase(line)) {
-						phase++;
+						encryption_level++;
 					}
 					if ("rsa on".equalsIgnoreCase(line)) {
-						phase = 2;
+						encryption_level = 2;
 					}
 					if ("ec off".equalsIgnoreCase(dc_line)) {
-						phase = 0;
+						encryption_level = 0;
 						dc_line = null;
 					}
 				}
@@ -160,6 +168,8 @@ class BetaServer {
 					e.printStackTrace();
 				}
 			}
+			System.out.print(user + " has ended their session.\n");
+			user = null;
 		}
 	}
 }
