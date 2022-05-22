@@ -89,8 +89,13 @@ class BetaServer {
 				int phase = 0;
 
 				while (Authorization(user, pass) != true) {
-					user = in.readLine();
-					pass = in.readLine();
+					try {
+						user = rsa.decrypt(in.readLine());
+						pass = rsa.decrypt(in.readLine());
+					} catch (Exception ignored) {
+					}
+					System.out.println("attempted username: " + user);
+					System.out.println("attempted password: " + pass);
 					attempt++;
 					if (Authorization(user, pass) != false) {
 						out.println("authorized");

@@ -3,7 +3,7 @@ import java.net.*;
 import java.util.*;
 
 public class BetaClient {
-	
+
 	// driver code
 	public static void main(String[] args) {
 		RSA rsa = new RSA();
@@ -32,15 +32,21 @@ public class BetaClient {
 			while (!"authorized".equalsIgnoreCase(line)) {
 				System.out.println("Enter username: ");
 				line = sc.nextLine();
-				out.println(line);
+				try {
+					out.println(rsa.encrypt(line));
+				} catch (Exception ignored) {
+				}
 				System.out.println("Enter password: ");
 				line = sc.nextLine();
-				out.println(line);
+				try {
+					out.println(rsa.encrypt(line));
+				} catch (Exception ignored) {
+				}
 				line = in.readLine();
 			}
 
 			System.out.println("Welcome Back! "
-								+ in.readLine());
+					+ in.readLine());
 
 			while (!"exit".equalsIgnoreCase(line)) {
 
