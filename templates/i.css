@@ -1,9 +1,7 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>VPN for All</title>
+<title>CSS Template</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -53,13 +51,14 @@ body {
 <body>
 
 <div class="sidenav">
-    Don't have an account? <a href="{{ url_for('signup') }}">Sign Up Here</a>.
-    Have an account? <a href="{{ url_for('login') }}">Log In Here</a>.
+  <a href="#">Link</a>
+  <a href="#">Link</a>
+  <a href="#">Link</a>
 </div>
 
 <div class="content">
-  <h2>VPN for All</h2>
-  <p>Use VPN for all today to stay safe</p>
+  <h2>CSS Template</h2>
+  <p>A full-height, fixed sidenav and content.</p>
 </div>
 
 </body>
