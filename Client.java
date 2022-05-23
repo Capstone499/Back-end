@@ -14,7 +14,7 @@ public class Client {
 		int attempt_counter = 0;
 		// establish a connection by providing host and port
 		// number
-		try (Socket socket = new Socket("localhost", 1234)) {
+		try (Socket socket = new Socket("172.20.224.1", 1234)) {
 
 			// writing to server
 			PrintWriter out = new PrintWriter( // converts characters into bytes
@@ -29,6 +29,7 @@ public class Client {
 
 			// recs for encryption/message sending
 			String line = null;
+			String read_out_loud = "";
 
 			while (!"authorized".equalsIgnoreCase(line)) {
 				System.out.println("Enter username: ");
@@ -50,20 +51,35 @@ public class Client {
 				}
 				System.out.print("Login attempt #" + attempt_counter + " " + line + "\n");
 			}
-			if (attempt_counter > 4) {
+			if (attempt_counter > 5) {
 				line = "exit";
 				System.out.print("Login failed. Closing program");
 
 			} else {
-				System.out.println("Welcome Back! "
-						+ in.readLine());
-				System.out.println("Remember by default encryption is off!");
-				System.out.println("To turn on AES encryption simply type: aes on");
-				System.out.println("To turn on RSA encryption simply type: rsa on");
-				System.out.println("To turn off encryption simply type: ec off");
-				System.out.println("Exiting is as simple as typing: exit (while encryption is off)");
-				System.out.println(
-						"Note: to swap encryptions you must first turn off encryption and then type in the encryption level you want!");
+				read_out_loud = in.readLine();
+				if (!"authorized".equalsIgnoreCase(read_out_loud)) {
+					System.out.println("Welcome Back! "
+							+ read_out_loud);
+					System.out.println("Remember by default encryption is off!");
+					System.out.println("To turn on AES encryption simply type: aes on");
+					System.out.println("To turn on RSA encryption simply type: rsa on");
+					System.out.println("To turn off encryption simply type: ec off");
+					System.out.println("Exiting is as simple as typing: exit (while encryption is off)");
+					System.out.println(
+							"Note: to swap encryptions you must first turn off encryption and then type in the encryption level you want!");
+
+				} else {
+					System.out.println("Welcome Back! "
+							+ in.readLine());
+					System.out.println("Remember by default encryption is off!");
+					System.out.println("To turn on AES encryption simply type: aes on");
+					System.out.println("To turn on RSA encryption simply type: rsa on");
+					System.out.println("To turn off encryption simply type: ec off");
+					System.out.println("Exiting is as simple as typing: exit (while encryption is off)");
+					System.out.println(
+							"Note: to swap encryptions you must first turn off encryption and then type in the encryption level you want!");
+
+				}
 			}
 			while (!"exit".equalsIgnoreCase(line)) {
 
@@ -118,14 +134,13 @@ public class Client {
 					System.out.print("Encryption has been turned off!\n");
 				}
 			}
-
 			// closing the scanner object
 			sc.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (attempt_counter < 5) {
-			System.out.print("exited successfuly");
+		if (attempt_counter < 6) {
+			System.out.print("Exited Successfuly");
 		}
 	}
 }

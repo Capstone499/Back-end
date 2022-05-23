@@ -86,7 +86,7 @@ class Server {
 						new InputStreamReader(
 								clientSocket.getInputStream()));
 
-				String line = null;
+				String line = "";
 				String dc_line = null;
 
 				while (Authorization(user, pass) != true) {
