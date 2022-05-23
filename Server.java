@@ -36,7 +36,7 @@ class Server {
 				new Thread(clientSock).start();
 			}
 		} catch (IOException e) {
-			// This catch statement handles exceptions and errors 
+			// This catch statement handles exceptions and errors
 			// the returned result is used for debugging and testing purposes
 			e.printStackTrace();
 		} finally {
@@ -58,7 +58,8 @@ class Server {
 		public ClientHandler(Socket socket) {
 			this.clientSocket = socket;
 		}
-		// This function checks the authorization of the username and password 
+
+		// This function checks the authorization of the username and password
 		public Boolean Authorization(String username, String password) {
 			if ("user".equalsIgnoreCase(username) && "pass".equalsIgnoreCase(password)) {
 				return true;
@@ -99,8 +100,6 @@ class Server {
 						pass = rsa.decrypt(in.readLine());
 					} catch (Exception ignored) {
 					}
-					System.out.println("attempted username: " + user);
-					System.out.println("attempted password: " + pass);
 					if (Authorization(user, pass) != false) {
 						out.println("authorized");
 						System.out.println(user + " Successfully Logged In");
@@ -109,7 +108,8 @@ class Server {
 						if (attempt == 3) {
 							out.println("Last Attempt!");
 						}
-						// If there are more than 4 failed attempts, then the system will provide the user a unique warning message
+						// If there are more than 4 failed attempts, then the system will provide the
+						// user a unique warning message
 						if (attempt > 4) {
 							break;
 						} else {
@@ -120,7 +120,7 @@ class Server {
 					}
 				}
 
-				//If there are more than 4 failed attempts, then the system will break
+				// If there are more than 4 failed attempts, then the system will break
 				if (attempt > 4) {
 					line = null;
 					System.out.print(user + " failed to login. closing thread\n");
