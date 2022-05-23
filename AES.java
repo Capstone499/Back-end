@@ -7,6 +7,7 @@ import java.util.Base64;
 
 // Encryption method AES is implemented in this file as a public class
 public class AES {
+    // Initialize private strings, key, and a byte array
     private String one = "cNY1I3M05D7jyjNCv2NdFQ==";
     private String two = "oLFQ3dPSDv02xD1S";
     private SecretKey key;

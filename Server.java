@@ -9,8 +9,8 @@ class Server {
 
 		try {
 
-			// server is listening on port 1234
-			server = new ServerSocket(1234);
+			// server is listening on port 25565
+			server = new ServerSocket(25565);
 			server.setReuseAddress(true);
 
 			System.out.println("Server is now online");
@@ -88,7 +88,7 @@ class Server {
 						new InputStreamReader(
 								clientSocket.getInputStream()));
 
-				String line = null;
+				String line = "";
 				String dc_line = null;
 
 				// While the server checks for the authorization,
