@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request, session, redirect, url_for
 import uuid
 from acc import db
-import bcrypt
 
 
 
@@ -15,9 +14,6 @@ class User:
             "username": request.form.get('username', type=str),
             "password": request.form.get('password',  type=str)  
         }
-        password = user["password"]                     # set password to the input password
-        hashed_password = self.hash_password(password)  # hash password before input to database 
-        print(hashed_password) 
 
         if db.user_info.find_one({"username": user["username"]}):
             return jsonify({"error": "Sorry, this username is already in use"}), 400
@@ -25,18 +21,12 @@ class User:
             db.user_info.insert_one(
                 {"_id": user["_id"],
                  "username": user["username"],
-                 "password": hashed_password
+                 "password": user["password"]
                 }
             #user    
         )
         
-        return jsonify({"Success": "You have been added into our system"}), 200
-    
-    # function to hash password 
-    def hash_password(self, password):
-        salt = bcrypt.gensalt()
-        hashed = bcrypt.hashpw(password.encode(), salt)
-        return hashed 
+        return redirect(url_for('index'))
 
     def LogIn(self):
         print("Information sent to login:\t",request.form)
@@ -46,20 +36,12 @@ class User:
         }
         validate = db.user_info.find_one({"username": user["username"]})
         if(validate == None):
-            return jsonify({"error": "Wrong Username"}), 400 
+            return jsonify({"error": "Wrong User"}), 400
         else:
-            IsLoggedIn = True  
-        '''if(validate["password"] == user["password"] and validate["username"] == user["username"]): 
+            IsLoggedIn = True
+        if(validate["password"] == user["password"] and validate["username"] == user["username"]):
                 self.IsLoggedIn = True
-                return jsonify({"Success": "You have logged into our system"}), 200
+                return redirect(url_for('success'))
+                 
         else:
-                return jsonify({"error": "Wrong User or Password"}), 400'''
-
-
-        password = user["password"]                               # set password variable to the input pw on login 
-        found_password = db.user_info["password"]                 # set variable to hashed pw stored in database
-        if bcrypt.checkpw(password.encode(), found_password):     # check hashed input pw with hashed pw stored in database
-            self.IsLoggedIn = True
-            return jsonify({"Success": "You have logged into our system"}), 200
-        else:
-            return jsonify({"error": "Wrong User or Password"}), 400
+                return jsonify({"error": "Wrong User or Password"}), 400
