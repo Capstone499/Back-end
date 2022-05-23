@@ -30,13 +30,16 @@ public class Client {
 			// recs for encryption/message sending
 			String line = null;
 
+			// if you're not authorized, it will ask you for your username
 			while (!"authorized".equalsIgnoreCase(line)) {
 				System.out.println("Enter username: ");
 				line = sc.nextLine();
 				try {
+					// RSA encryption here of the input string
 					out.println(rsa.encrypt(line));
 				} catch (Exception ignored) {
 				}
+				// asks user for password after "username"
 				System.out.println("Enter password: ");
 				line = sc.nextLine();
 				try {
@@ -44,17 +47,21 @@ public class Client {
 				} catch (Exception ignored) {
 				}
 				line = in.readLine();
+				// This variable is an attempt counter for failed logins
 				attempt_counter++;
 				if (attempt_counter > 4) {
 					break;
 				}
 				System.out.print("Login attempt #" + attempt_counter + " " + line + "\n");
 			}
+			// If you have more than 4 failed attempts, it closes the program
 			if (attempt_counter > 4) {
 				line = "exit";
 				System.out.print("Login failed. Closing program");
 
-			} else {
+			} 
+			// Helpful reminders/instructions to the user for encryption and decryption
+			else {
 				System.out.println("Welcome Back! "
 						+ in.readLine());
 				System.out.println("Remember by default encryption is off!");
@@ -82,6 +89,7 @@ public class Client {
 					} catch (Exception ignored) {
 					}
 				}
+
 				// RSA Mode
 				if (current_mode == 2) {
 					try {
@@ -93,7 +101,6 @@ public class Client {
 								+ in.readLine());
 					} catch (Exception ignored) {
 					}
-
 				}
 				if (current_mode == 0) {
 					// sending the user input to server
@@ -104,7 +111,8 @@ public class Client {
 					System.out.println(" Server replied "
 							+ in.readLine());
 				}
-
+				// Once these specific strings are entered by the user either: 
+				// AES and RSA encryption can be turned on and off
 				if ("aes on".equalsIgnoreCase(line)) {
 					current_mode++;
 					System.out.print("AES encryption has been turned on!\n");

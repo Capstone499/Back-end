@@ -36,6 +36,8 @@ class Server {
 				new Thread(clientSock).start();
 			}
 		} catch (IOException e) {
+			// This catch statement handles exceptions and errors 
+			// the returned result is used for debugging and testing purposes
 			e.printStackTrace();
 		} finally {
 			if (server != null) {
@@ -56,7 +58,7 @@ class Server {
 		public ClientHandler(Socket socket) {
 			this.clientSocket = socket;
 		}
-
+		// This function checks the authorization of the username and password 
 		public Boolean Authorization(String username, String password) {
 			if ("user".equalsIgnoreCase(username) && "pass".equalsIgnoreCase(password)) {
 				return true;
@@ -89,6 +91,8 @@ class Server {
 				String line = null;
 				String dc_line = null;
 
+				// While the server checks for the authorization,
+				// the username and password is decrypted from bytes and read
 				while (Authorization(user, pass) != true) {
 					try {
 						user = rsa.decrypt(in.readLine());
@@ -101,9 +105,11 @@ class Server {
 						out.println("authorized");
 						System.out.println(user + " Successfully Logged In");
 					} else {
+						// If there are 3 failed attempts, then the system will warn the user
 						if (attempt == 3) {
 							out.println("Last Attempt!");
 						}
+						// If there are more than 4 failed attempts, then the system will provide the user a unique warning message
 						if (attempt > 4) {
 							break;
 						} else {
@@ -114,6 +120,7 @@ class Server {
 					}
 				}
 
+				//If there are more than 4 failed attempts, then the system will break
 				if (attempt > 4) {
 					line = null;
 					System.out.print(user + " failed to login. closing thread\n");
@@ -131,6 +138,7 @@ class Server {
 						System.out.printf(" Sent from " + user + ": %s\n", line);
 						out.println(line);
 					}
+					// If encryption level is 1, then AES will be used
 					if (encryption_level == 1) {
 						System.out.printf(" Sent from " + user + " (AES): %s\n", line);
 						try {
@@ -140,6 +148,7 @@ class Server {
 						}
 						out.println(line);
 					}
+					// If encryption level is 2, then RSA will be used
 					if (encryption_level == 2) {
 						System.out.printf(" Sent from " + user + " (RSA): %s\n", line);
 						try {
@@ -149,6 +158,7 @@ class Server {
 						}
 						out.println(line);
 					}
+					// If statments to turn on and off the encryption types
 					if ("aes on".equalsIgnoreCase(line)) {
 						encryption_level++;
 					}
