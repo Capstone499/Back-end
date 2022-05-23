@@ -16,9 +16,6 @@ mongo = PyMongo(app)
 def index():
     return render_template("index.html")
 
-@app.route("/success", methods = ["GET","POST"])
-def success():
-    return redirect(url_for("index"))
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
@@ -35,9 +32,11 @@ def login():
         return User.LogIn(self)
     return render_template("login.html")
 
-@app.route("/logsuccess", methods=["GET", "POST"])
-def logsuccess():
-    return 'Log In Success'
+@app.route("/landing", methods=["GET", "POST"])
+def success():
+    return render_template("landing.html")
+
+
 
 
 
