@@ -1,7 +1,9 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Sign Up</title>
+<title>Log In</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
@@ -46,6 +48,7 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     height: 30px; 
     font-size:small;
+    
 }
 
 .btn{
@@ -57,35 +60,37 @@ body {
 }
 
 
+
+
 </style>
 </head>
 <body>
 
 <div class="topnav">
-  <a href="{{ url_for('login') }}">Log In Here</a>.
+  <a href="{{ url_for('signup') }}">Sign Up</a>.
 </div>
 
 <div class="content">
-  <h2>Sign Up</h2>
-  <p><form method="POST" action="{{ url_for('signup') }}">
-    <div class="form-group">
-        <p>
-            <label for="username">Username (5 or more characters)</label>
-            <input type="text" class="form-control" pattern=".{5,}"  name="username" placeholder="Enter Username">
-        </p>
-    </div>
-    <div class="form-group">
-        <p>
-            <label for="password">Password (6 or more characters)</label>
-            <input type="password" class="form-control" pattern=".{6,}"  name="password" placeholder="Enter Password">
-        </p>
-    </div>
-    <p>
-        <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-dark">Sign Up</button>
-    </p>
-</form></p>
-</div>
-
-
-</body>
-</html>
+    <h2>Log In</h2>
+    <p><form method="post" action="{{ url_for('login') }}">
+      <div class="form-group">
+          <p>
+              <label for="username_in">Username</label>
+              <input type="text" class="form-control" pattern=".{5,}" name="user" placeholder="Enter Username">
+          </p>
+      </div>
+      <div class="form-group">
+          <p>
+              <label for="password_in">Password</label>
+              <input type="password" class="form-control" pattern=".{6,}" name="pass" placeholder="Enter Password">
+          </p>
+      </div>
+      <p>
+          <button type="submit" value="Submit" class="btn btn-primary btn-lg btn-dark">Log In</button>
+      </p>
+  </form></p>
+  </div>
+  
+  
+  </body>
+  </html>
