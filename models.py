@@ -26,7 +26,7 @@ class User:
             #user    
         )
         
-        return jsonify({"Success": "You have been added into our system"}), 200
+        return redirect(url_for('index'))
 
     def LogIn(self):
         print("Information sent to login:\t",request.form)
@@ -36,11 +36,12 @@ class User:
         }
         validate = db.user_info.find_one({"username": user["username"]})
         if(validate == None):
-            return jsonify({"error": "Wrong Username or Password"}), 400 
+            return jsonify({"error": "Wrong User"}), 400
         else:
             IsLoggedIn = True
         if(validate["password"] == user["password"] and validate["username"] == user["username"]):
                 self.IsLoggedIn = True
-                return jsonify({"Success": "You have logged into our system"}), 200
+                return redirect(url_for('success'))
+                 
         else:
                 return jsonify({"error": "Wrong User or Password"}), 400
