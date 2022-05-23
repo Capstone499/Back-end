@@ -6,8 +6,8 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 
 public class AES {
-    private String yabe = "cNY1I3M05D7jyjNCv2NdFQ==";
-    private String eyeBee = "oLFQ3dPSDv02xD1S";
+    private String key_from_string = "cNY1I3M05D7jyjNCv2NdFQ==";
+    private String iv_from_string = "oLFQ3dPSDv02xD1S";
     private SecretKey key;
     private byte[] IV;
 
@@ -18,8 +18,8 @@ public class AES {
     }
 
     public void initFromStrings() {
-        key = new SecretKeySpec(decode(yabe), "AES");
-        this.IV = decode(eyeBee);
+        key = new SecretKeySpec(decode(key_from_string), "AES");
+        this.IV = decode(iv_from_string);
     }
 
     public String encrypt(String message) throws Exception {
@@ -33,15 +33,6 @@ public class AES {
 
     private String encode(byte[] data) {
         return Base64.getEncoder().encodeToString(data);
-    }
-
-    public String decrypt(String encryptedMessage) throws Exception {
-        byte[] messageInBytes = decode(encryptedMessage);
-        Cipher decryptionCipher = Cipher.getInstance("AES/GCM/NoPadding");
-        GCMParameterSpec spec = new GCMParameterSpec(128, IV);
-        decryptionCipher.init(Cipher.DECRYPT_MODE, key, spec);
-        byte[] decryptedBytes = decryptionCipher.doFinal(messageInBytes);
-        return new String(decryptedBytes);
     }
 
     private byte[] decode(String data) {
@@ -58,10 +49,8 @@ public class AES {
             AES aes = new AES();
             aes.initFromStrings();
             String encryptedMessage = aes.encrypt("checking functionality");
-            String decryptedMessage = aes.decrypt(encryptedMessage);
 
             System.err.println("\nEncrypted message: " + encryptedMessage);
-            System.err.println("Decrypted Message: " + decryptedMessage + "\n");
             aes.exportKeys();
         } catch (Exception ignored) {
         }
