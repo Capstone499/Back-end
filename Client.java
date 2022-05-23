@@ -14,7 +14,7 @@ public class Client {
 		int attempt_counter = 0;
 		// establish a connection by providing host and port
 		// number
-		try (Socket socket = new Socket("172.20.224.1", 1234)) {
+		try (Socket socket = new Socket("localhost", 25565)) {
 
 			// writing to server
 			PrintWriter out = new PrintWriter( // converts characters into bytes
