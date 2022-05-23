@@ -41,7 +41,7 @@ class User:
             IsLoggedIn = True
         if(validate["password"] == user["password"] and validate["username"] == user["username"]):
                 self.IsLoggedIn = True
-                return redirect(url_for('landing'))
+                return redirect(url_for('success'))
                  
         else:
                 return jsonify({"error": "Wrong User or Password"}), 400
